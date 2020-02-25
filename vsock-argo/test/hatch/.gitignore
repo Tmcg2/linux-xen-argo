@@ -27,14 +27,15 @@ config.h.in~
 stamp-h1
 /config.log
 /config.status
-m4
 
 # https://www.gnu.org/software/libtool/
 /ltmain.sh
 .libs
 .deps
 libtool
-*-libtool
+
+# http://www.gnu.org/software/texinfo
+/texinfo.tex
 
 ## C.
 # Prerequisites
@@ -45,6 +46,15 @@ libtool
 *.ko
 *.obj
 *.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
 
 # Libraries
 *.lib
@@ -57,9 +67,6 @@ libtool
 *.so.*
 *.dylib
 
-# Misc
-libargo.pc
-app/argo-proxy
-app/ttcp-argo
-test/test
-libargo/app/viptables
+## Misc
+cscope.*
+hatch

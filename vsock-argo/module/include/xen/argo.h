@@ -43,8 +43,6 @@
 /* Fixed-width type for "argo port" number. Nothing to do with evtchns. */
 typedef uint32_t xen_argo_port_t;
 
-#define XEN_ARGO_PORT_ANY 0xffffffffU
-
 /* gfn type: 64-bit fixed-width on all architectures */
 typedef uint64_t xen_argo_gfn_t;
 
@@ -57,15 +55,16 @@ typedef uint64_t xen_argo_gfn_t;
 */
 #define XEN_ARGO_MAXIOV          8U
 
+#ifdef DEFINE_XEN_GUEST_HANDLE
+DEFINE_XEN_GUEST_HANDLE(uint8_t);
+#endif
+
 typedef struct xen_argo_iov
 {
-#ifdef XEN_GUEST_HANDLE
-    XEN_GUEST_HANDLE(const_uint8) iov_hnd;
+#ifdef XEN_GUEST_HANDLE_64
+    XEN_GUEST_HANDLE_64(uint8_t) iov_hnd;
 #else
-    const uint8_t *iov_hnd;
-#ifdef CONFIG_ARM /* FIXME: 32-bit ARM only */
-    uint32_t pad2;
-#endif
+    uint64_t iov_hnd;
 #endif
     uint32_t iov_len;
     uint32_t pad;
@@ -167,21 +166,6 @@ struct xen_argo_ring_message_header
     uint8_t data[0];
 #endif
 };
-
-typedef struct xen_argo_viptables_rule
-{
-    struct xen_argo_addr src;
-    struct xen_argo_addr dst;
-    uint32_t accept;
-} xen_argo_viptables_rule_t;
-
-#define XEN_ARGO_VIPTABLES_LIST_SIZE 8
-
-typedef struct xen_argo_viptables_list
-{
-    struct xen_argo_viptables_rule rules[XEN_ARGO_VIPTABLES_LIST_SIZE];
-    uint32_t nrules;
-} xen_argo_viptables_list_t;
 
 /*
  * Hypercall operations
@@ -291,20 +275,5 @@ typedef struct xen_argo_viptables_list
  * arg4: 0 (ZERO)
  */
 #define XEN_ARGO_OP_notify              4
-
-/*
- * XEN_ARGO_OP_viptables_add
- */
-#define XEN_ARGO_OP_viptables_add       6
-
-/*
- * XEN_ARGO_OP_viptables_del
- */
-#define XEN_ARGO_OP_viptables_del       7
-
-/*
- * XEN_ARGO_OP_viptables_list
- */
-#define XEN_ARGO_OP_viptables_list      8
 
 #endif

@@ -5,11 +5,9 @@
 modules.order
 Module.symvers
 *.o
-*.o.cmd
 *.o.d
+*.o.cmd
 .tmp_versions
-tags
-cscope.*
 *.a
 *.a.cmd
 *.mod
